@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>骰子桌子布局</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #e8ecef;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            width: 300px;
+            height: 200px;
+            border: 2px solid #333;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .dice {
+            width: 80px;
+            height: 80px;
+            background-color: #ddd;
+            border: 1px solid #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .dice.selected {
+            border: 2px solid red;
+            background-color: #f0f0f0;
+        }
+
+        .dice.disabled {
+            border: 2px solid gray;
+            background-color: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .controls {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        .left-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-right: 20px;
+        }
+
+        input[type="button"] {
+            padding: 5px 10px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="button"]:active {
+            background-color: #004085;
+            transform: scale(0.98);
+        }
+
+        input[type="button"]:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #6c757d;
+        }
+
+        .scoreboard {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 340px;
+            text-align: left;
+        }
+
+        .scoreboard div {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .scoreboard .target-score {
+            font-weight: bold;
+            color: #d32f2f;
+            font-size: 20px;
+        }
+
+        .scoreboard .player1 {
+            color: #1976d2;
+            font-weight: 600;
+        }
+
+        .scoreboard .player2 {
+            color: #388e3c;
+            font-weight: 600;
+        }
+
+        .player-display {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 8px;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .player-display.player1 {
+            color: #1976d2;
+            border-color: #1976d2;
+        }
+
+        .player-display.player2 {
+            color: #388e3c;
+            border-color: #388e3c;
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <!-- 当前玩家显示 -->
+    <div id="currentPlayerDisplay" class="player-display player1">当前玩家: 玩家 1</div>
+
+    <!-- 上方按钮 -->
+    <input type="button" id="rollDiceBtn" value="掷出骰子" onclick="rollDice()">
+
+    <!-- 左侧按钮和中心容器 -->
+    <div class="controls">
+        <!-- 左侧三个按钮 -->
+        <div class="left-buttons">
+            <input type="button" id="rerollDiceBtn" value="计分并掷出" onclick="rerollDice()">
+            <input type="button" id="finishPlayerBtn" value="计分并结束" onclick="finishthisplayer()">
+            <input type="button" id="resetGameBtn" value="重置游戏" onclick="resetGame()">
+        </div>
+
+        <!-- 中心方形框 -->
+        <div class="container">
+            <div class="dice" id="touzi1">0</div>
+            <div class="dice" id="touzi2">0</div>
+            <div class="dice" id="touzi3">0</div>
+            <div class="dice" id="touzi4">0</div>
+            <div class="dice" id="touzi5">0</div>
+            <div class="dice" id="touzi6">0</div>
+        </div>
+    </div>
+
+    <!-- 下方记分板 -->
+    <div class="scoreboard">
+        <div class="target-score">最高要求分数：<span id="allscore">4000</span></div>
+        <div class="player1">玩家1本轮得分：<span id="thisscore1">0</span></div>
+        <div class="player2">玩家2本轮得分：<span id="thisscore2">0</span></div>
+        <div class="player1">玩家1总分：<span id="score1">0</span></div>
+        <div class="player2">玩家2总分：<span id="score2">0</span></div>
+    </div>
+</body>
+<script type="text/javascript" src="js/index.js"></script>
+</html>
